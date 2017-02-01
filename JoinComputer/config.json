@@ -1,0 +1,12 @@
+{
+  "desktopPrefix": "PC",
+  "domain" : "Domain.local",
+  "domainController": "19.168.0.1",
+  "filter": "(|(CN=LT*)(CN=PC*))",
+  "laptopPrefix": "LT",
+  "lastAddedComputersAmount": 5,
+  "numberOfCharacters": 4,
+  "searchBaseOU": "OU=Computers,OU=Site,DC=Domain,DC=Local",
+  "newComputerOU": "OU=Deploy,OU=Computers,OU=Site,DC=Domain,DC=Local",
+  "prefix": "COMP-SITE"
+}
