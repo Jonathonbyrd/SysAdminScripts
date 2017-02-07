@@ -112,7 +112,7 @@ Function Add-ComputerToDomain
 	{
 		Try
 		{
-			Add-Computer -ComputerName $env:COMPUTERNAME -NewName $name -Credential $cred -DomainName $config.domain -OUPath $ou -Restart  -Force
+			Add-Computer -NewName $name -Credential $cred -DomainName $config.domain -OUPath $ou -Restart  -Force
 		}
 		Catch
 		{
