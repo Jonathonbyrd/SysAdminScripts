@@ -32,7 +32,7 @@
 .OUTPUTS
   None
 .NOTES
-  Version:        0.1
+  Version:        1.0
   Author:         R. Mens
   Creation Date:  1 February 2017
   Purpose/Change: Initial script development
