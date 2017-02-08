@@ -19,6 +19,9 @@
 .PARAMETER <WhatIf> (default = false)
 	Run the script in test mode to see the result
 
+.PARAMETER <Force> (default = false)
+	Set Force to true to remove hidden and readonly files
+
 .EXAMPLE
 	Remove files older than 7 days from given path	
 
@@ -33,16 +36,22 @@
 	Run script in test mode to see what gets removed. This will no remove any files
 
 	.\removeOldFiles.ps1 -path 'd:\path\to\remove' -age 7 -WhatIf
+
+.EXAMPLE
+	Also remove hidden and read-only files
+
+	.\removeOldFiles.ps1 -path 'd:\path\to\remove' -age 7 -Force
    
 .NOTES
-	Version:        1.0
+	Version:        1.1
 	Author:         R. Mens
-	Blog:			  http://lazyadmin.nl
+	Blog:			http://lazyadmin.nl
 	Creation Date:  08 feb 2017
-	Purpose/Change: Initial script development
+	Purpose/Change: Set -Force as optional switch and default to false
 
 .LINK
-	
+	https://github.com/ruudmens/SysAdminScripts/tree/master/RemoveOldFiles
+	https://gallery.technet.microsoft.com/Remove-old-files-and-16041dc8
 
 #>
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
@@ -64,7 +73,11 @@ PARAM(
 	[parameter(ValueFromPipeline=$true,
 				ValueFromPipelineByPropertyName=$true,
 				Mandatory=$false)]
-	[switch]$whatIf=$false
+	[switch]$whatIf=$false,
+	[parameter(ValueFromPipeline=$true,
+				ValueFromPipelineByPropertyName=$true,
+				Mandatory=$false)]
+	[switch]$force=$false
 )
 BEGIN
 {
@@ -89,11 +102,11 @@ PROCESS
 	
 	Write-Debug "Following files will be deleted:"
 	
-	Get-ChildItem -Path $Path -Recurse -Force -File | Where-Object { $_.LastWriteTime -lt $dateTime } | `
+	Get-ChildItem -Path $Path -Recurse -File -Force:$force | Where-Object { $_.LastWriteTime -lt $dateTime } | `
 		ForEach-Object `
 		{ `
 			Write-Debug $_.FullName ` 
-			Remove-Item -Path $_.FullName -Force -WhatIf:$whatIf `
+			Remove-Item -Path $_.FullName -Force:$force -WhatIf:$whatIf `
 		}
 	#endregion
 	
@@ -102,15 +115,15 @@ PROCESS
 	If ($removeEmptyFolders)
 	{
 		Write-Debug "Removing empty folders"
-		Get-ChildItem -Path $Path -Recurse -Force -Directory | `
+		Get-ChildItem -Path $Path -Recurse -Directory -Force:$force | `
 		Where-Object `
 		{ `
-			(Get-ChildItem -Path $_.FullName -Recurse -Force -File) -eq $null  `
+			(Get-ChildItem -Path $_.FullName -Recurse -File -Force:$force) -eq $null  `
 		} | `
 		ForEach-Object `
 		{ `
 			Write-Debug $_.FullName ` 
-			Remove-Item -Path $_.FullName -Force -Recurse -WhatIf:$WhatIf `
+			Remove-Item -Path $_.FullName -Recurse -Force:$force -WhatIf:$WhatIf `
 		}
 	}
 	#endregion
