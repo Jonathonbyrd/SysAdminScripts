@@ -102,11 +102,11 @@ PROCESS
 	
 	Write-Debug "Following files will be deleted:"
 	
-	Get-ChildItem -Path $Path -Recurse -File -Force:$force | Where-Object { $_.LastWriteTime -lt $dateTime } | `
+	Get-ChildItem -Path $Path -Recurse -File -Force:$force | Where-Object { ( $_.LastWriteTime -lt $dateTime  -and $_.FullName -notlike '*DfsrPrivate*' )} | `
 		ForEach-Object `
 		{ `
 			Write-Debug $_.FullName ` 
-			Remove-Item -Path $_.FullName -Force:$force -WhatIf:$whatIf `
+			Remove-Item -Path $_.FullName -ErrorAction SilentlyContinue -Force:$force -WhatIf:$whatIf  ` 
 		}
 	#endregion
 	
@@ -118,7 +118,7 @@ PROCESS
 		Get-ChildItem -Path $Path -Recurse -Directory -Force:$force | `
 		Where-Object `
 		{ `
-			(Get-ChildItem -Path $_.FullName -Recurse -File -Force:$force) -eq $null  `
+			( (Get-ChildItem -Path $_.FullName -Recurse -File -Force:$force) -eq $null  -and $_.FullName -notlike '*DfsrPrivate*')`
 		} | `
 		ForEach-Object `
 		{ `
