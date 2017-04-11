@@ -24,13 +24,13 @@
 	.\ConnectTo-O365.ps1 -config
    
 .NOTES
-	Version:        1.0
+	Version:        1.1
 	Author:         R. Mens
 	Blog:			http://lazyadmin.nl
 	Creation Date:  29 mrt 2017
 	
 .LINK
-	
+	https://github.com/ruudmens/SysAdminScripts/tree/master/Connectors
 #>
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 [CmdletBinding()]
@@ -42,8 +42,9 @@ PARAM(
 )
 BEGIN
 {
-	$uaPath = "$PSScriptRoot\useraccount.txt"
-	$ssPath = "$PSScriptRoot\securestring.txt"
+	$computerName = $env:COMPUTERNAME
+	$uaPath = "$PSScriptRoot\useraccount-$computerName.txt"
+	$ssPath = "$PSScriptRoot\securestring-$computerName.txt"
 }
 PROCESS
 {
