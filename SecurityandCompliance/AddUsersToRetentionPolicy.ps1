@@ -23,7 +23,7 @@
 	Creation Date:  13 apr 2017
 	
 .LINK
-	
+	https://github.com/ruudmens/SysAdminScripts/blob/master/SecurityandCompliance/AddUsersToRetentionPolicy.ps1
 #>
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
 
