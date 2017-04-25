@@ -21,10 +21,10 @@
 .EXAMPLE
 	Save credentials in the script root
 
-	.\ConnectTo-sfbOnline.ps1 -config
+	.\ConnectTo-sfbOnline.ps1 -save
    
 .NOTES
-	Version:        1.1
+	Version:        1.2
 	Author:         R. Mens
 	Blog:			http://lazyadmin.nl
 	Creation Date:  29 mrt 2017
@@ -38,7 +38,7 @@ PARAM(
 	[parameter(ValueFromPipeline=$true,
 				ValueFromPipelineByPropertyName=$true,
 				Mandatory=$false)]
-	[switch]$config=$false
+	[switch]$save=$false
 )
 BEGIN
 {
@@ -48,7 +48,7 @@ BEGIN
 }
 PROCESS
 {
-	If ($config)
+	If ($save)
 	{
 		#create securestring and store credentials
 		Write-Host 'Running in config mode, storing credentials in script root location' -ForegroundColor Yellow
