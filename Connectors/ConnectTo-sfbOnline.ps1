@@ -24,7 +24,7 @@
 	.\ConnectTo-sfbOnline.ps1 -save
    
 .NOTES
-	Version:        1.2
+	Version:        1.3
 	Author:         R. Mens
 	Blog:			http://lazyadmin.nl
 	Creation Date:  29 mrt 2017
@@ -48,6 +48,7 @@ BEGIN
 }
 PROCESS
 {
+	#region save credentials
 	If ($save)
 	{
 		#create securestring and store credentials
@@ -61,33 +62,39 @@ PROCESS
 
 		#Storing username
 		Set-Content $uaPath $username
+
+		Write-Host 'Credentials saved' -ForegroundColor Green
 	}
-	Else
+	#endregion
+
+	Write-Host 'Connecting to Skype for Business Online' -ForegroundColor Yellow
+	
+	#Check if a securestring password is stored in the script root
+	If (Test-Path $ssPath) 
 	{
-		#Check if a securestring password is stored in the script root
-		If (Test-Path $ssPath) 
-		{
-			$securePwd = Get-Content $ssPath | ConvertTo-SecureString
-		}
+		$securePwd = Get-Content $ssPath | ConvertTo-SecureString
+	}
 
-		#Check if useraccount is stored in the script root
-		If (Test-Path $uaPath)
-		{
-			$username = Get-Content $uaPath
-		}
+	#Check if useraccount is stored in the script root
+	If (Test-Path $uaPath)
+	{
+		$username = Get-Content $uaPath
+	}
 
-		#If the useraccount or password is empty, ask for the credentials
-		if (!$securePwd -or !$username)
-		{
-			$username = Read-Host "Enter your email address"
-			$securePwd = Read-Host -assecurestring "Please enter your password"
-		}
+	#If the useraccount or password is empty, ask for the credentials
+	if (!$securePwd -or !$username)
+	{
+		Write-Host 'No credentials stored. Run with -save option to store credentials' -ForegroundColor Yellow
+
+		$username = Read-Host "Enter your email address"
+		$securePwd = Read-Host -assecurestring "Please enter your password"
+	}
 		
-		#Create credential object
-		$credObject = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $securePwd
+	#Create credential object
+	$credObject = New-Object System.Management.Automation.PSCredential -ArgumentList $username, $securePwd
 
-		#Import the Skype for Business Online PS session
-		$sfbSession = New-CsOnlineSession -Credential $credObject
-		Import-PSSession $sfbSession
-	}	
+	#Import the Skype for Business Online PS session
+	$sfbSession = New-CsOnlineSession -Credential $credObject
+	Import-PSSession $sfbSession
+	
 }
