@@ -14,10 +14,10 @@
   Email with deleted accounts
 
 .NOTES
-  Version:        1.0
+  Version:        1.1
   Author:         R. Mens
   Creation Date:  13 march 2017
-  Purpose/Change: Initial script development
+  Purpose/Change: Fix whatif switch comment
 
 .EXAMPLE
   Send notification with users accounts that will be delete within 7 days, when they are 30 days inactive.
@@ -34,7 +34,7 @@
 .EXAMPLE
   Run in test mode
 
-   .\CleanupDisabledUsers.ps1 -TimeSpan 30 -SearchBase "OU=Users,DC=Contoso,DC=Local" -WhatIf $true
+   .\CleanupDisabledUsers.ps1 -TimeSpan 30 -SearchBase "OU=Users,DC=Contoso,DC=Local" -WhatIf
 #>
 
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
